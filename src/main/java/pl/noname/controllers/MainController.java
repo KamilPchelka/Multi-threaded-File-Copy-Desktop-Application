@@ -35,27 +35,28 @@ public class MainController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("file_copy_anchor_pane.fxml"));
         ItemCopyController controller = new ItemCopyController(src, dest, this);
-        controller.start();
         loader.setController(controller);
         Node fileCopyAnchorPane = loader.load();
         itemCopyControllerMap.put(controller, fileCopyAnchorPane);
         containerForFileCopyAnchorPanes.getChildren().add(fileCopyAnchorPane);
+        controller.start();
 
     }
 
     public void handleStopAllButton() {
-        itemCopyControllerMap.forEach((key, value) -> removeFileCopyAnchorPane(key));
+        itemCopyControllerMap.forEach((key, value) -> containerForFileCopyAnchorPanes.getChildren().remove(value));
         itemCopyControllerMap.clear();
     }
 
-    public void removeFileCopyAnchorPane(ItemCopyController itemCopyController) {
+    public void removeFileCopyOperation(ItemCopyController itemCopyController) {
 
         Node node = itemCopyControllerMap.get(itemCopyController);
         containerForFileCopyAnchorPanes.getChildren().remove(node);
+        itemCopyControllerMap.remove(itemCopyController);
     }
 
     public void handleCopyButton() throws IOException {
         FXMLLoader popUpLoader = new FXMLLoader(getClass().getClassLoader().getResource("popUpView.fxml"));
-        PopUpController popUp = new PopUpController(popUpLoader);
+        PopUpController popUp = new PopUpController(popUpLoader, this);
     }
 }
