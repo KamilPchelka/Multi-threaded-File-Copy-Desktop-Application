@@ -1,21 +1,27 @@
 package pl.noname;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.io.*;
+import java.net.URL;
 
 /**
  * Hello world!
  */
-public class App {
-    public static void main(String[] args) throws IOException {
+public class App extends Application {
+    public static void main(String[] args) {
+
+        launch();
     }
 
-    private static void copyFileUsingStream(String source, String destination, String thread) throws IOException {
+    private static void copyFileUsingStream(String source, String destination, String thread) {
         Runnable newThread = () -> {
             System.out.println("Thread " + thread + " started");
             try (InputStream inputStream
                          = new FileInputStream(source);
                  OutputStream outputStream
-                         = new FileOutputStream(new File(destination));) {
+                         = new FileOutputStream(new File(destination))) {
 
                 float written = 0;
                 long total = new File(source).length() / 1000000;
@@ -38,5 +44,20 @@ public class App {
             }
         };
         new Thread(newThread).start();
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        URL url = getClass().getClassLoader().getResource("src/main/resources/main_view.fxml");
+
+        System.out.println(url);
+        /*FXMLLoader loader = new FXMLLoader();
+        Scene scene = new Scene(loader.load());
+
+        primaryStage.setScene(scene);
+
+        primaryStage.show();
+*/
     }
 }
