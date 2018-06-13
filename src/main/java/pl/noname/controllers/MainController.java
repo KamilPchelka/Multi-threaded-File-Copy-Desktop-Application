@@ -21,7 +21,8 @@ public class MainController {
     }
 
 
-    public void handleCopyButton() {
-        System.out.println("lalala");
+    public void handleCopyButton() throws IOException {
+        FXMLLoader popUpLoader = new FXMLLoader(getClass().getClassLoader().getResource("popUpView.fxml"));
+        PopUpController popUp = new PopUpController(popUpLoader);
     }
 }
