@@ -6,18 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="141.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainView">
+<AnchorPane prefHeight="141.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutY="117.0" prefHeight="51.0" prefWidth="400.0">
          <children>
-            <Button layoutX="334.0" layoutY="13.0" mnemonicParsing="false" text="Cancel" />
-            <Button layoutX="269.0" layoutY="13.0" mnemonicParsing="false" text="Ok" />
+            <Button layoutX="334.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleCancelButton" text="Cancel" />
+            <Button layoutX="269.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleOkButton" text="Ok" />
          </children>
       </AnchorPane>
       <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From:" />
       <Text layoutX="21.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To:" />
-      <TextField layoutX="51.0" layoutY="21.0" prefHeight="25.0" prefWidth="337.0" />
-      <TextField layoutX="51.0" layoutY="58.0" prefHeight="25.0" prefWidth="337.0" />
-      <CheckBox layoutX="51.0" layoutY="100.0" mnemonicParsing="false" text="Overwrite?" />
+      <TextField id="source" fx:id="source" editable="false" layoutX="51.0" layoutY="21.0" onAction="#handleChooseSource" prefHeight="25.0" prefWidth="272.0" />
+      <TextField id="destination" fx:id="destination" editable="false" layoutX="51.0" layoutY="58.0" onAction="#handleChooseDestination" prefHeight="25.0" prefWidth="272.0" />
+      <CheckBox layoutX="51.0" fx:id="wantOverwrite" layoutY="100.0" mnemonicParsing="false" text="Overwrite?" />
+      <Button layoutX="334.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleChooseSource" text="Choose" />
+      <Button layoutX="334.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleChooseDestination" text="Choose" />
    </children>
 </AnchorPane>
