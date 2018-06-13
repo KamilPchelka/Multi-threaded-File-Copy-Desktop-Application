@@ -19,27 +19,34 @@ public class PopUpController {
     private final Scene scene;
     private final FileChooser fileChooser = new FileChooser();
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
+    private final MainController mainController;
     private String fileName;
     @FXML
     private TextField source, destination;
     @FXML
     private CheckBox wantOverwrite;
 
-    public PopUpController(FXMLLoader loader) throws IOException {
+    public PopUpController(FXMLLoader loader, MainController mainController) throws IOException {
         loader.setController(this);
         this.stage = new Stage();
         this.scene = new Scene(loader.load());
+        this.mainController = mainController;
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
     }
 
-    public void handleOkButton() {
+    public void handleOkButton() throws IOException {
         if (source != null && destination != null) {
-            System.out.println(destination.getText() + "\\" + fileName);
-            System.out.println(source.getText());
+            String srcPath = source.getText();
+            String destPath = destination.getText();
+
+            System.out.println(destPath + "\\" + fileName);
+            System.out.println(srcPath);
             System.out.println(wantOverwrite.isSelected());
+
             stage.close();
+            mainController.initializeNewFileCopyOperation(new File(srcPath), new File(destPath));
         }
     }
 
