@@ -15,13 +15,11 @@ import java.util.Map;
 public class MainController {
 
 
-    @FXML
-    VBox containerForFileCopyAnchorPanes;
-
-    Map<ItemCopyController, Node> itemCopyControllerMap = new HashMap<>();
-
     private final Stage stage;
     private final Scene scene;
+    @FXML
+    VBox containerForFileCopyAnchorPanes;
+    Map<ItemCopyController, Node> itemCopyControllerMap = new HashMap<>();
 
     public MainController(FXMLLoader loader, Stage stage) throws IOException {
         loader.setController(this);
@@ -54,6 +52,8 @@ public class MainController {
 
         Node node = itemCopyControllerMap.get(itemCopyController);
         containerForFileCopyAnchorPanes.getChildren().remove(node);
+    }
+
     public void handleCopyButton() throws IOException {
         FXMLLoader popUpLoader = new FXMLLoader(getClass().getClassLoader().getResource("popUpView.fxml"));
         PopUpController popUp = new PopUpController(popUpLoader);
