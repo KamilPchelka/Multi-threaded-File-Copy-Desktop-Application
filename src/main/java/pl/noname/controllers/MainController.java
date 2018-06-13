@@ -26,13 +26,11 @@ public class MainController {
         this.stage = stage;
         this.scene = new Scene(loader.load());
         stage.setScene(scene);
-        initializeNewFileCopyOperation(new File("lala"), new File("lala"));
-
         stage.show();
     }
 
-    public void initializeNewFileCopyOperation(File src, File dest) throws IOException {
-
+    public void initializeNewFileCopyOperation(File src, String dest) throws IOException {
+        System.out.println(src.toString() + "     " + dest);
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("file_copy_anchor_pane.fxml"));
         ItemCopyController controller = new ItemCopyController(src, dest, this);
         loader.setController(controller);

@@ -1,39 +1,78 @@
 package pl.noname.controllers;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
-import java.io.File;
+import java.io.*;
 
-public class ItemCopyController {
+import static java.lang.Thread.sleep;
+
+public class ItemCopyController{
 
     private final File src;
-    private final File dest;
+    private final String dest;
     private final MainController mainController;
+    private Task copyTask;
 
     @FXML
     Label pathLabel;
     @FXML
     ProgressBar progressBar;
+    @FXML
+    Button stopButton;
 
-    public ItemCopyController(File src, File dest, MainController mainController) {
+    public ItemCopyController(File src, String dest, MainController mainController) {
         this.src = src;
         this.dest = dest;
         this.mainController = mainController;
     }
 
+    public void start(){
+        copyTask = new Task<Void>() {
+            @Override
+            public Void call() {
+                try (InputStream inputStream
+                             = new FileInputStream(src.getAbsolutePath());
+                     OutputStream outputStream
+                             = new FileOutputStream(new File(dest))) {
 
-    public void start() {
-        String pathLabelText = String.format("Copying from '%s' to '%s'", src.getAbsolutePath(), dest.getAbsolutePath());
+                    float written = 0;
+                    long total = new File(src.getAbsolutePath()).length() / 1000000;
+                    int read;
+                    byte[] bytes = new byte[1024];
+                    while ((read = inputStream.read(bytes)) != -1) {
+                        if(isCancelled()) break;
+                        written += read;
+                        float writenMb = written / 1000000;
+                        System.out.println("Thread " + "is: " + ((writenMb / total) * 100) + "% done");
+                        updateProgress(writenMb, total);
+                        outputStream.write(bytes, 0, read);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            public void cancelled(){
+                new File(dest).delete();
+            }
+        };
+        String pathLabelText = String.format("Copying from '%s' to '%s'", src.getAbsolutePath(), dest);
         pathLabel.setText(pathLabelText);
-        progressBar.setProgress(0.8);
+        progressBar.progressProperty().bind(copyTask.progressProperty());
+        new Thread(copyTask).start();
     }
 
     public void stop() {
     }
 
     public void handleStopButton() {
+        copyTask.cancel();
         mainController.removeFileCopyOperation(this);
     }
 }
