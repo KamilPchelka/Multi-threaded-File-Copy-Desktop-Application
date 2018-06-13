@@ -1,10 +1,11 @@
 package pl.noname;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.net.URL;
 
 /**
  * Hello world!
@@ -47,17 +48,13 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
 
-        URL url = getClass().getClassLoader().getResource("src/main/resources/main_view.fxml");
-
-        System.out.println(url);
-        /*FXMLLoader loader = new FXMLLoader();
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("main_view.fxml"));
         Scene scene = new Scene(loader.load());
 
         primaryStage.setScene(scene);
 
         primaryStage.show();
-*/
     }
 }
