@@ -45,10 +45,6 @@ public class MainController {
 
     }
 
-    public void handleCopyButton() {
-
-    }
-
     public void handleStopAllButton() {
         itemCopyControllerMap.forEach((key, value) -> removeFileCopyAnchorPane(key));
         itemCopyControllerMap.clear();
@@ -58,5 +54,8 @@ public class MainController {
 
         Node node = itemCopyControllerMap.get(itemCopyController);
         containerForFileCopyAnchorPanes.getChildren().remove(node);
+    public void handleCopyButton() throws IOException {
+        FXMLLoader popUpLoader = new FXMLLoader(getClass().getClassLoader().getResource("popUpView.fxml"));
+        PopUpController popUp = new PopUpController(popUpLoader);
     }
 }
