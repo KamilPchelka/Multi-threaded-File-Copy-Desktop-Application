@@ -8,8 +8,6 @@ import javafx.scene.control.ProgressBar;
 
 import java.io.*;
 
-import static java.lang.Thread.sleep;
-
 public class ItemCopyController{
 
     private final File src;
@@ -23,6 +21,7 @@ public class ItemCopyController{
     ProgressBar progressBar;
     @FXML
     Button stopButton;
+
 
     public ItemCopyController(File src, String dest, MainController mainController) {
         this.src = src;
@@ -42,7 +41,7 @@ public class ItemCopyController{
                     float written = 0;
                     long total = new File(src.getAbsolutePath()).length() / 1000000;
                     int read;
-                    byte[] bytes = new byte[1024];
+                    byte[] bytes = new byte[100];
                     while ((read = inputStream.read(bytes)) != -1) {
                         if(isCancelled()) break;
                         written += read;
@@ -65,10 +64,12 @@ public class ItemCopyController{
         String pathLabelText = String.format("Copying from '%s' to '%s'", src.getAbsolutePath(), dest);
         pathLabel.setText(pathLabelText);
         progressBar.progressProperty().bind(copyTask.progressProperty());
+        copyTask.setOnSucceeded(event -> stopButton.setText("Done"));
         new Thread(copyTask).start();
     }
 
     public void stop() {
+        copyTask.cancel();
     }
 
     public void handleStopButton() {

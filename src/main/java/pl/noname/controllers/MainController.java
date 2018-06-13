@@ -43,6 +43,7 @@ public class MainController {
 
     public void handleStopAllButton() {
         itemCopyControllerMap.forEach((key, value) -> containerForFileCopyAnchorPanes.getChildren().remove(value));
+        itemCopyControllerMap.forEach((key, value) -> key.stop());
         itemCopyControllerMap.clear();
     }
 
