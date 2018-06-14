@@ -30,7 +30,6 @@ public class MainController {
     }
 
     public void initializeNewFileCopyOperation(File src, String dest, boolean overwrite) throws IOException {
-        System.out.println(src.toString() + "     " + dest);
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("file_copy_anchor_pane.fxml"));
         ItemCopyController controller = new ItemCopyController(src, dest, overwrite, this);
         loader.setController(controller);
