@@ -63,7 +63,6 @@ public class ItemCopyController{
                         if(isCancelled()) break;
                         written += read;
                         float writtenMb = written / bytesInMegabyte;
-                        System.out.println("Thread " + "is: " + ((writtenMb / total) * 100) + "% done");
                         updateProgress(writtenMb, total);
                         outputStream.write(bytes, 0, read);
                     }

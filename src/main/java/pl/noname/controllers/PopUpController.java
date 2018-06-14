@@ -22,6 +22,7 @@ public class PopUpController {
     private final MainController mainController;
     private String fileName;
     private File sourceFile;
+    private File destinationDirectory;
     @FXML
     private TextField source, destination;
     @FXML
@@ -38,7 +39,7 @@ public class PopUpController {
     }
 
     public void handleOkButton() throws IOException {
-        if (source != null && destination != null) {
+        if (sourceFile != null && destinationDirectory != null) {
             String srcPath = source.getText();
             String destPath = destination.getText();
             stage.close();
@@ -52,8 +53,10 @@ public class PopUpController {
     }
 
     public void handleCopyFolder(){
-        source = null;
-        destination = null;
+        sourceFile = null;
+        destinationDirectory = null;
+        source.setText("");
+        destination.setText("");
     }
 
     public void handleCancelButton() {
@@ -80,9 +83,9 @@ public class PopUpController {
     }
 
     public void handleChooseDestination() {
-        File selectedDirectory = directoryChooser.showDialog(stage);
-        if (selectedDirectory != null) {
-            String filepath = selectedDirectory.getAbsolutePath();
+       destinationDirectory = directoryChooser.showDialog(stage);
+        if (destinationDirectory != null) {
+            String filepath = destinationDirectory.getAbsolutePath();
             destination.setText(filepath);
         }
     }
