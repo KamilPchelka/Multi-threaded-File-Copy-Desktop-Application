@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import org.controlsfx.control.Notifications;
+
 import java.io.*;
 
 public class ItemCopyController{
@@ -15,6 +16,7 @@ public class ItemCopyController{
     private final boolean overwrite;
     private Task copyTask;
     private String dest;
+    String fileSeparator = System.getProperty("os.name").equals("Linux") ? "/" : "\\";
 
     @FXML
     Label pathLabel;
@@ -43,12 +45,12 @@ public class ItemCopyController{
                 String fileName = src.getName();
 
                 if(!overwrite){
-                    while(new File(destinationToCheck + "\\" + additionalNameValue + fileName).isFile()){
+                    while (new File(destinationToCheck + fileSeparator + additionalNameValue + fileName).isFile()) {
                         newFileValue++;
                         additionalNameValue = "(" + newFileValue + ")";
                     }
                 }
-                dest = destinationToCheck + "\\" + additionalNameValue + fileName;
+                dest = destinationToCheck + fileSeparator + additionalNameValue + fileName;
 
                 try (InputStream inputStream
                              = new FileInputStream(src.getAbsolutePath());
