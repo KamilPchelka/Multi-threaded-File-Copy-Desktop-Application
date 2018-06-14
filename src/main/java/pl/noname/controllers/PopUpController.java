@@ -21,10 +21,11 @@ public class PopUpController {
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final MainController mainController;
     private String fileName;
+    private File sourceFile;
     @FXML
     private TextField source, destination;
     @FXML
-    private CheckBox wantOverwrite;
+    private CheckBox wantOverwrite, copyFolder;
 
     public PopUpController(FXMLLoader loader, MainController mainController) throws IOException {
         loader.setController(this);
@@ -40,26 +41,41 @@ public class PopUpController {
         if (source != null && destination != null) {
             String srcPath = source.getText();
             String destPath = destination.getText();
-
-            System.out.println(destPath + "\\" + fileName);
-            System.out.println(srcPath);
-            System.out.println(wantOverwrite.isSelected());
-
             stage.close();
-            mainController.initializeNewFileCopyOperation(new File(srcPath), destPath, wantOverwrite.isSelected());
+            if(copyFolder.isSelected()){
+               copyFilesFromFolder(sourceFile);
+            }
+            else{
+                mainController.initializeNewFileCopyOperation(new File(srcPath), destPath, wantOverwrite.isSelected());
+            }
         }
+    }
+
+    public void handleCopyFolder(){
+        source = null;
+        destination = null;
     }
 
     public void handleCancelButton() {
         stage.close();
     }
 
+    public void copyFilesFromFolder(final File folder) throws IOException {
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                copyFilesFromFolder(fileEntry);
+            } else {
+                mainController.initializeNewFileCopyOperation(fileEntry, destination.getText(), wantOverwrite.isSelected());
+            }
+        }
+    }
+
     public void handleChooseSource() {
-        File file = fileChooser.showOpenDialog(stage);
-        if (file != null) {
-            String filepath = file.getAbsolutePath();
+        sourceFile = copyFolder.isSelected() ? directoryChooser.showDialog(stage) : fileChooser.showOpenDialog(stage);
+        if (sourceFile != null) {
+            String filepath = sourceFile.getAbsolutePath();
             source.setText(filepath);
-            fileName = file.getName();
+            fileName = sourceFile.getName();
         }
     }
 
