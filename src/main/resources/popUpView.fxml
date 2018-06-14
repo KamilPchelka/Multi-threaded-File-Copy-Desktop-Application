@@ -21,6 +21,6 @@
       <CheckBox fx:id="wantOverwrite" layoutX="51.0" layoutY="100.0" mnemonicParsing="false" text="Overwrite?" />
       <Button layoutX="334.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleChooseSource" text="Choose" />
       <Button layoutX="334.0" layoutY="58.0" mnemonicParsing="false" onAction="#handleChooseDestination" text="Choose" />
-      <CheckBox fx:id="copyFolder" layoutX="151.0" layoutY="100.0" mnemonicParsing="false" text="Copy Folder?" />
+      <CheckBox fx:id="copyFolder" layoutX="151.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleCopyFolder" text="Copy Folder?" />
    </children>
 </AnchorPane>
