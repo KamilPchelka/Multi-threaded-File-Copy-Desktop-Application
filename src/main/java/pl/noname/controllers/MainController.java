@@ -43,7 +43,7 @@ public class MainController {
     @FXML
     public void handleStopAllButton() {
         itemCopyControllerMap.forEach((key, value) -> containerForFileCopyAnchorPanes.getChildren().remove(value));
-        itemCopyControllerMap.forEach((key, value) -> key.handleStopButton());
+        itemCopyControllerMap.forEach((key, value) -> key.cancelTask());
         itemCopyControllerMap.clear();
     }
 

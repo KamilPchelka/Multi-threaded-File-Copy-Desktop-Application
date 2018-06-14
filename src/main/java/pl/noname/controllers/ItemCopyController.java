@@ -97,4 +97,9 @@ public class ItemCopyController{
         copyTask.cancel();
         mainController.removeFileCopyOperation(this);
     }
+
+    public void cancelTask() {
+        copyTask.cancel();
+
+    }
 }
