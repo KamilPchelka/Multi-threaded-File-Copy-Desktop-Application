@@ -18,8 +18,8 @@ public class MainController {
     private final Stage stage;
     private final Scene scene;
     @FXML
-    VBox containerForFileCopyAnchorPanes;
-    Map<ItemCopyController, Node> itemCopyControllerMap = new HashMap<>();
+    private VBox containerForFileCopyAnchorPanes;
+    private Map<ItemCopyController, Node> itemCopyControllerMap = new HashMap<>();
 
     public MainController(FXMLLoader loader, Stage stage) throws IOException {
         loader.setController(this);
@@ -30,7 +30,6 @@ public class MainController {
     }
 
     public void initializeNewFileCopyOperation(File src, String dest, boolean overwrite) throws IOException {
-        System.out.println(src.toString() + "     " + dest);
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("file_copy_anchor_pane.fxml"));
         ItemCopyController controller = new ItemCopyController(src, dest, overwrite, this);
         loader.setController(controller);
@@ -41,9 +40,10 @@ public class MainController {
 
     }
 
+    @FXML
     public void handleStopAllButton() {
         itemCopyControllerMap.forEach((key, value) -> containerForFileCopyAnchorPanes.getChildren().remove(value));
-        itemCopyControllerMap.forEach((key, value) -> key.stop());
+        itemCopyControllerMap.forEach((key, value) -> key.handleStopButton());
         itemCopyControllerMap.clear();
     }
 
@@ -54,8 +54,9 @@ public class MainController {
         itemCopyControllerMap.remove(itemCopyController);
     }
 
+    @FXML
     public void handleCopyButton() throws IOException {
         FXMLLoader popUpLoader = new FXMLLoader(getClass().getClassLoader().getResource("popUpView.fxml"));
-        PopUpController popUp = new PopUpController(popUpLoader, this);
+        new PopUpController(popUpLoader, this);
     }
 }
