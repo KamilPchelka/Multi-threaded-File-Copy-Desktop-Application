@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-
+import org.controlsfx.control.Notifications;
 import java.io.*;
 
 public class ItemCopyController{
@@ -74,6 +74,7 @@ public class ItemCopyController{
 
             @Override
             public void cancelled(){
+                Notifications.create().text("Copying file " + src + " has been cancelled!").show();
                 new File(dest).delete();
             }
         };
