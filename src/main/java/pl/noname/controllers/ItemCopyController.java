@@ -35,6 +35,8 @@ public class ItemCopyController{
         copyTask = new Task<Void>() {
             @Override
             public Void call() {
+                final int bytesInMegabyte = 1_000_000;
+                final int buffor = 2048;
                 int newFileValue = 0;
                 String additionalNameValue = "";
                 String destinationToCheck = dest;
@@ -47,17 +49,16 @@ public class ItemCopyController{
                     }
                 }
                 dest = destinationToCheck + "\\" + additionalNameValue + fileName;
-                final int bytesInMegabyte = 1_000_000;
-                final int buffor = 2048;
+
                 try (InputStream inputStream
                              = new FileInputStream(src.getAbsolutePath());
                      OutputStream outputStream
                              = new FileOutputStream(new File(dest))) {
-
                     float written = 0;
                     long total = new File(src.getAbsolutePath()).length() / bytesInMegabyte;
                     int read;
                     byte[] bytes = new byte[buffor];
+
                     while ((read = inputStream.read(bytes)) != -1) {
                         if(isCancelled()) break;
                         written += read;
@@ -73,20 +74,22 @@ public class ItemCopyController{
             }
 
             @Override
+            public void succeeded(){
+                Notifications.create().text("Copying file " + src + " completed successfully!").show();
+            }
+
+            @Override
             public void cancelled(){
                 Notifications.create().text("Copying file " + src + " has been cancelled!").show();
                 new File(dest).delete();
             }
+
         };
         String pathLabelText = String.format("Copying from '%s' to '%s'", src.getAbsolutePath(), dest);
         pathLabel.setText(pathLabelText);
         progressBar.progressProperty().bind(copyTask.progressProperty());
         copyTask.setOnSucceeded(event -> stopButton.setText("Done"));
         new Thread(copyTask).start();
-    }
-
-    public void stop() {
-        copyTask.cancel();
     }
 
     public void handleStopButton() {
