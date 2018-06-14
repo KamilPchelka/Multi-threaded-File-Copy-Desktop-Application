@@ -29,10 +29,10 @@ public class MainController {
         stage.show();
     }
 
-    public void initializeNewFileCopyOperation(File src, String dest) throws IOException {
+    public void initializeNewFileCopyOperation(File src, String dest, boolean overwrite) throws IOException {
         System.out.println(src.toString() + "     " + dest);
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("file_copy_anchor_pane.fxml"));
-        ItemCopyController controller = new ItemCopyController(src, dest, this);
+        ItemCopyController controller = new ItemCopyController(src, dest, overwrite, this);
         loader.setController(controller);
         Node fileCopyAnchorPane = loader.load();
         itemCopyControllerMap.put(controller, fileCopyAnchorPane);

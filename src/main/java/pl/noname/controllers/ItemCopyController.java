@@ -11,9 +11,10 @@ import java.io.*;
 public class ItemCopyController{
 
     private final File src;
-    private final String dest;
     private final MainController mainController;
+    private final boolean overwrite;
     private Task copyTask;
+    private String dest;
 
     @FXML
     Label pathLabel;
@@ -23,9 +24,10 @@ public class ItemCopyController{
     Button stopButton;
 
 
-    public ItemCopyController(File src, String dest, MainController mainController) {
+    public ItemCopyController(File src, String dest, boolean overwrite, MainController mainController) {
         this.src = src;
         this.dest = dest;
+        this.overwrite = overwrite;
         this.mainController = mainController;
     }
 
@@ -33,21 +35,35 @@ public class ItemCopyController{
         copyTask = new Task<Void>() {
             @Override
             public Void call() {
+                int newFileValue = 0;
+                String additionalNameValue = "";
+                String destinationToCheck = dest;
+                String fileName = src.getName();
+
+                if(!overwrite){
+                    while(new File(destinationToCheck + "\\" + additionalNameValue + fileName).isFile()){
+                        newFileValue++;
+                        additionalNameValue = "(" + newFileValue + ")";
+                    }
+                }
+                dest = destinationToCheck + "\\" + additionalNameValue + fileName;
+                final int bytesInMegabyte = 1_000_000;
+                final int buffor = 2048;
                 try (InputStream inputStream
                              = new FileInputStream(src.getAbsolutePath());
                      OutputStream outputStream
                              = new FileOutputStream(new File(dest))) {
 
                     float written = 0;
-                    long total = new File(src.getAbsolutePath()).length() / 1000000;
+                    long total = new File(src.getAbsolutePath()).length() / bytesInMegabyte;
                     int read;
-                    byte[] bytes = new byte[100];
+                    byte[] bytes = new byte[buffor];
                     while ((read = inputStream.read(bytes)) != -1) {
                         if(isCancelled()) break;
                         written += read;
-                        float writenMb = written / 1000000;
-                        System.out.println("Thread " + "is: " + ((writenMb / total) * 100) + "% done");
-                        updateProgress(writenMb, total);
+                        float writtenMb = written / bytesInMegabyte;
+                        System.out.println("Thread " + "is: " + ((writtenMb / total) * 100) + "% done");
+                        updateProgress(writtenMb, total);
                         outputStream.write(bytes, 0, read);
                     }
                 } catch (Exception e) {

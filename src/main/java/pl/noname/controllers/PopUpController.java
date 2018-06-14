@@ -46,7 +46,7 @@ public class PopUpController {
             System.out.println(wantOverwrite.isSelected());
 
             stage.close();
-            mainController.initializeNewFileCopyOperation(new File(srcPath), destPath + "\\" + fileName);
+            mainController.initializeNewFileCopyOperation(new File(srcPath), destPath, wantOverwrite.isSelected());
         }
     }
 
